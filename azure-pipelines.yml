@@ -19,8 +19,8 @@ steps:
 - script: docker pull quay.io/appthreat/sast-scan
   displayName: "Download sast-scan"
 - script: |
-    docker run -v $(Build.SourcesDirectory):/app quay.io/appthreat/sast-scan scan --src /app --type java --out_dir /app/reports
-  displayName: "Java scan"
+    docker run -v $(Build.SourcesDirectory):/app quay.io/appthreat/sast-scan scan --src /app --type credscan,java --out_dir /app/reports
+  displayName: "Java and Credscan"
   env:
     WORKSPACE: "https://github.com/AppThreat/WebGoat/blob/$(Build.SourceVersion)"
 
