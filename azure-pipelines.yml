@@ -21,6 +21,8 @@ steps:
 - script: |
     docker run -v $(Build.SourcesDirectory):/app quay.io/appthreat/sast-scan scan --src /app --type java --out_dir /app/reports
   displayName: "Java scan"
+  env:
+    WORKSPACE: "https://github.com/AppThreat/WebGoat/blob/$(Build.SourceVersion)"
 
 # Bring together all the .sarif files to a directory called CodeAnalysisLogs
 - task: CopyFiles@2
