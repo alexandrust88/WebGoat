@@ -1,0 +1,39 @@
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: Maven@3
+  inputs:
+    mavenPomFile: 'pom.xml'
+    mavenOptions: '-Xmx3072m'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.11'
+    jdkArchitectureOption: 'x64'
+    publishJUnitResults: false
+    goals: 'compile'
+# Pull the sast-scan image from the container registry. Feel free to cache it locally within acr, ecr or gcr to
+# improve performance and security
+- script: docker pull quay.io/appthreat/sast-scan
+- script: |
+    docker run -v $(Build.SourcesDirectory):/app quay.io/appthreat/sast-scan scan --src /app --type java --out_dir /app/reports
+    displayName: "Java scan"
+
+# Bring together all the .sarif files to a directory called CodeAnalysisLogs
+- task: CopyFiles@2
+  displayName: "Copy analysis logs"
+  inputs:
+    SourceFolder: "$(Build.SourcesDirectory)"
+    Contents: "**/*.sarif"
+    TargetFolder: "$(Build.ArtifactStagingDirectory)/CodeAnalysisLogs"
+    flattenFolders: true
+# To integrate with the SARIF Azure DevOps Extension it is necessary to publish the CodeAnalysisLogs folder
+# as an artifact with the same name
+- task: PublishBuildArtifacts@1
+  displayName: "Publish analysis logs"
+  inputs:
+    PathtoPublish: "$(Build.ArtifactStagingDirectory)/CodeAnalysisLogs"
+    ArtifactName: "CodeAnalysisLogs"
+    publishLocation: "Container"
