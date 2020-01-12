@@ -27,8 +27,7 @@ steps:
       --type credscan,java,bash,nodejs \
       --out_dir /reports/CodeAnalysisLogs
   displayName: "Java and Credscan"
-  env:
-    WORKSPACE: "https://github.com/AppThreat/WebGoat/blob/$(Build.SourceVersion)"
+  continueOnError: "true"
 
 # To integrate with the SARIF Azure DevOps Extension it is necessary to publish the CodeAnalysisLogs folder
 # as an artifact with the same name
