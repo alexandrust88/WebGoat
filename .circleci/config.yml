@@ -1,7 +1,7 @@
 version: 2.1
 
-#orbs:
-  #sast-scan: appthreat/sast-scan@dev:first
+orbs:
+  sast-scan: appthreat/sast-scan@dev:master
 jobs:
   build:
     docker:
@@ -13,24 +13,27 @@ jobs:
 
     steps:
       - checkout
+      - setup_remote_docker
+      - run: |
+          # Compile the code
+          mvn compile
+          # Create a dummy container with the application data
+          docker create -v /app --name appcon alpine:3.4 /bin/true
+          # Copy the repo to the temporary volume
+          docker cp $PWD appcon:/app
+      - run: |
+          set +e
+          # start an application container using this volume
+          docker run -e "WORKSPACE=${CIRCLE_REPOSITORY_URL}" --volumes-from appcon quay.io/appthreat/sast-scan scan --src /app --out_dir /app/reports
+      - store_artifacts:
+          path: $PWD/reports
+          destination: sast-scan-reports
 
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "pom.xml" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
-
-      - run: mvn dependency
-
-      - save_cache:
-          paths:
-            - ~/.m2
-          key: v1-dependencies-{{ checksum "pom.xml" }}
-
-      # compile
-      - run: mvn compile
-
-      # Perform sast-scan
-      #- sast-scan/scan:
-      #    repo_type: 'credscan,java'
+# workflows:
+#   sast-scan:
+#     jobs:
+#       - build
+#       - sast-scan/scan:
+#           repo_type: 'credscan,java'
+#           src: ${PWD}
+#           output: ${PWD}/reports
