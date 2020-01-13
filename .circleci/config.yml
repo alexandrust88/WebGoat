@@ -1,7 +1,7 @@
 version: 2.1
 
-orbs:
-  sast-scan: appthreat/sast-scan@dev:first
+#orbs:
+  #sast-scan: appthreat/sast-scan@dev:first
 jobs:
   build:
     docker:
@@ -32,5 +32,5 @@ jobs:
       - run: mvn compile
 
       # Perform sast-scan
-      - sast-scan/scan:
-          repo_type: 'credscan,java'
+      #- sast-scan/scan:
+      #    repo_type: 'credscan,java'
