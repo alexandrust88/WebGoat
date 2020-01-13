@@ -1,4 +1,4 @@
-name: Java CI
+name: Sast scan
 
 on:
   schedule:
