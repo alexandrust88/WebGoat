@@ -24,9 +24,12 @@ jobs:
       - run: |
           set +e
           # start an application container using this volume
-          docker run -e "WORKSPACE=${CIRCLE_REPOSITORY_URL}" --volumes-from appcon quay.io/appthreat/sast-scan scan --src /app --out_dir /app/reports
+          docker run --name sastscan -e "WORKSPACE=${CIRCLE_REPOSITORY_URL}" --volumes-from appcon quay.io/appthreat/sast-scan scan --src /app --out_dir /app/reports
+          # Copy the reports
+          mkdir -p $CIRCLE_WORKING_DIRECTORY/reports
+          docker cp sastscan:/app/reports $CIRCLE_WORKING_DIRECTORY/reports
       - store_artifacts:
-          path: $PWD/reports
+          path: $CIRCLE_WORKING_DIRECTORY/reports
           destination: sast-scan-reports
 
 # workflows:
