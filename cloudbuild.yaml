@@ -6,7 +6,7 @@ steps:
   id: "Perform sast-scan"
   args: ["--type", "java", "--out_dir", "reports"]
   env:
-  - 'WORKSPACE=https://github.com/AppThreat/WebGoat/blob/master'
+  - 'WORKSPACE=https://github.com/AppThreat/WebGoat/blob/$COMMIT_SHA'
 - name: gcr.io/cloud-builders/gsutil
   args: ['-m', 'cp', 'reports/*.json', 'gs://sast_reports/']
 - name: gcr.io/$PROJECT_ID/bq
