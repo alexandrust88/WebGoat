@@ -1,0 +1,15 @@
+steps:
+- name: maven:3.6.0-jdk-11-slim
+  entrypoint: 'mvn'
+  args: ['compile']
+- name: "gcr.io/$PROJECT_ID/sast-scan"
+  id: "Perform sast-scan"
+  args: ["--type", "java", "--out_dir", "reports"]
+  env:
+  - 'WORKSPACE=https://github.com/AppThreat/WebGoat/blob/master'
+- name: gcr.io/cloud-builders/gsutil
+  args: ['-m', 'cp', 'reports/*.json', 'gs://sast_reports/']
+- name: gcr.io/$PROJECT_ID/bq
+  args: ['load', '--ignore_unknown_values', '--source_format=NEWLINE_DELIMITED_JSON', 'sastdb.all', 'reports/all-report.json']
+
+timeout: 1200s
