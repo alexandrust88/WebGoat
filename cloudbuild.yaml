@@ -4,7 +4,7 @@ steps:
   args: ['compile']
 - name: "gcr.io/$PROJECT_ID/sast-scan"
   id: "Perform sast-scan"
-  args: ["--type", "java", "--out_dir", "reports"]
+  args: ["--type", "java", "--out_dir", "reports", "--no-error"]
   env:
   - 'WORKSPACE=https://github.com/AppThreat/WebGoat/blob/$COMMIT_SHA'
 - name: gcr.io/cloud-builders/gsutil

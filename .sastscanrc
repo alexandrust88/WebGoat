@@ -1,0 +1,13 @@
+{
+    "scan_type": "java",
+    "scan_tools_args_map": {
+        "credscan": [
+            "gitleaks",
+            "--branch=develop",
+            "--repo-path=%(src)s",
+            "--redact",
+            "--report=%(report_fname_prefix)s.json",
+            "--report-format=json"
+        ]
+    }
+}
