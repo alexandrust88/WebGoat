@@ -17,7 +17,7 @@ steps:
     goals: 'compile'
 # Pull the sast-scan image from the container registry. Feel free to cache it locally within acr, ecr or gcr to
 # improve performance and security
-- script: docker pull quay.io/appthreat/sast-scan:feature_context
+- script: docker pull quay.io/appthreat/sast-scan
   displayName: "Download sast-scan"
 - script: |
     docker run -e "WORKSPACE=https://github.com/AppThreat/WebGoat/blob/$(Build.SourceVersion)" \
@@ -26,8 +26,7 @@ steps:
       -e "BRANCH=$(Build.SourceBranch)" \
       -v $(Build.SourcesDirectory):/app \
       -v $(Build.ArtifactStagingDirectory):/reports \
-      quay.io/appthreat/sast-scan:feature_context scan --src /app \
-      --type credscan,java,bash,nodejs \
+      quay.io/appthreat/sast-scan scan --src /app \
       --out_dir /reports/CodeAnalysisLogs
   displayName: "Java and Credscan"
   continueOnError: "true"
