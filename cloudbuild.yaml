@@ -7,6 +7,9 @@ steps:
   args: ["--type", "java", "--out_dir", "reports"]
   env:
   - 'WORKSPACE=https://github.com/AppThreat/WebGoat/blob/$COMMIT_SHA'
+  - 'REPOSITORY_URL=https://github.com/AppThreat/WebGoat'
+  - 'COMMIT_SHA=$COMMIT_SHA'
+  - 'BRANCH=$BRANCH_NAME'
 - name: gcr.io/cloud-builders/gsutil
   args: ['-m', 'cp', 'reports/*.json', 'gs://sast_reports/']
 - name: gcr.io/$PROJECT_ID/bq
