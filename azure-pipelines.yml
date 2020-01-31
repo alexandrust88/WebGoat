@@ -36,7 +36,7 @@ steps:
       -v $(Build.SourcesDirectory):/app \
       -v $(Build.ArtifactStagingDirectory):/reports \
       quay.io/appthreat/dep-scan scan --src /app \
-      --bom /reports/bom-report.xml \
+      --bom /reports/CodeAnalysisLogs/bom-report.xml \
       --report_file /reports/CodeAnalysisLogs/depscan.json
   displayName: "Dependency scan"
   continueOnError: "true"
