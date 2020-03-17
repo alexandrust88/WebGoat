@@ -1,8 +1,11 @@
 name: Sast scan
 
 on:
+  push:
+    branches:
+      - develop
   schedule:
-    - cron: "0 */4 * * *"
+    - cron: "0 */4 * * *"    
 
 jobs:
   build:
@@ -21,7 +24,7 @@ jobs:
       uses: AppThreat/sast-scan-action@v1.0.0
       with:
         output: reports
-        type: credscan,java,bash
+        type: java,bash,depscan
     - name: Upload scan reports
       uses: actions/upload-artifact@v1.0.0
       with:
