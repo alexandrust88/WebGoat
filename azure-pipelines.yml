@@ -23,24 +23,14 @@ steps:
     docker run -e "WORKSPACE=https://github.com/AppThreat/WebGoat/blob/$(Build.SourceVersion)" \
       -e "REPOSITORY_URL=$(Build.Repository.Uri)" \
       -e "COMMIT_SHA=$(Build.SourceVersion)" \
+      -e "GITHUB_TOKEN=$GITHUB_TOKEN"
       -e "BRANCH=$(Build.SourceBranch)" \
       -v $(Build.SourcesDirectory):/app \
       -v $(Build.ArtifactStagingDirectory):/reports \
       quay.io/appthreat/sast-scan scan --src /app \
       --out_dir /reports/CodeAnalysisLogs
-  displayName: "Java and Bom"
+  displayName: "AppThreat SAST and Dep scan"
   continueOnError: "true"
-- script: |
-    docker run -e "VULNDB_HOME=/db" \
-      -v $(Agent.TempDirectory):/db \
-      -v $(Build.SourcesDirectory):/app \
-      -v $(Build.ArtifactStagingDirectory):/reports \
-      quay.io/appthreat/dep-scan scan --src /app \
-      --bom /reports/CodeAnalysisLogs/bom-report.xml \
-      --report_file /reports/CodeAnalysisLogs/depscan.json
-  displayName: "Dependency scan"
-  continueOnError: "true"
-
 # To integrate with the SARIF Azure DevOps Extension it is necessary to publish the CodeAnalysisLogs folder
 # as an artifact with the same name
 - task: PublishBuildArtifacts@1
