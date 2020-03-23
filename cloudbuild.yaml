@@ -1,10 +1,10 @@
 steps:
 - name: maven:3.6.0-jdk-11-slim
   entrypoint: 'mvn'
-  args: ['compile']
+  args: ['compile', 'org.cyclonedx:cyclonedx-maven-plugin:makeAggregateBom']
 - name: "gcr.io/$PROJECT_ID/sast-scan"
   id: "Perform sast-scan"
-  args: ["--type", "java", "--out_dir", "reports"]
+  args: ["--type", "credscan,java,depscan", "--out_dir", "reports"]
   env:
   - 'WORKSPACE=https://github.com/AppThreat/WebGoat/blob/$COMMIT_SHA'
   - 'REPOSITORY_URL=https://github.com/AppThreat/WebGoat'
