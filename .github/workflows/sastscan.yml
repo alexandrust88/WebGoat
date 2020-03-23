@@ -22,9 +22,11 @@ jobs:
       run: mvn compile
     - name: Self sast-scan
       uses: AppThreat/sast-scan-action@v1.0.0
+      env:
+        VULNDB_HOME: ${{ github.workspace }}/db
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         output: reports
-        type: java,bash,depscan
     - name: Upload scan reports
       uses: actions/upload-artifact@v1.0.0
       with:
