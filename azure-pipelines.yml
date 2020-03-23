@@ -23,7 +23,7 @@ steps:
     docker run -e "WORKSPACE=https://github.com/AppThreat/WebGoat/blob/$(Build.SourceVersion)" \
       -e "REPOSITORY_URL=$(Build.Repository.Uri)" \
       -e "COMMIT_SHA=$(Build.SourceVersion)" \
-      -e "GITHUB_TOKEN=$GITHUB_TOKEN" \
+      -e "GITHUB_TOKEN=$(GITHUB_TOKEN)" \
       -e "BRANCH=$(Build.SourceBranch)" \
       -v $(Build.SourcesDirectory):/app \
       -v $(Build.ArtifactStagingDirectory):/reports \
