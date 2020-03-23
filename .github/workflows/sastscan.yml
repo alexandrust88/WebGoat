@@ -5,7 +5,7 @@ on:
     branches:
       - develop
   schedule:
-    - cron: "0 */4 * * *"    
+    - cron: "0 */4 * * *"
 
 jobs:
   build:
@@ -19,7 +19,7 @@ jobs:
       with:
         java-version: 1.11
     - name: Build with Maven
-      run: mvn compile
+      run: mvn compile package
     - name: Self sast-scan
       uses: AppThreat/sast-scan-action@v1.0.0
       env:
@@ -31,4 +31,4 @@ jobs:
       uses: actions/upload-artifact@v1.0.0
       with:
         name: sast-scan-reports
-        path: reports  
+        path: reports
