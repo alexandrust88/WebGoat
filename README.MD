@@ -8,3 +8,5 @@ Demo edit
 
 Hello world
 
+aws_access_key_id='AKIAIO5FODNN7EXAMPLE'
+secret_access_key='ABCDEF+c2L7yXeGvUyrPgYsDnWRRC1AYEXAMPLE"
