@@ -20,8 +20,7 @@ steps:
 - script: docker pull quay.io/appthreat/sast-scan
   displayName: "Download sast-scan"
 - script: |
-    docker run
-      -e "GITHUB_TOKEN=$(GITHUB_TOKEN)" \
+    docker run -e "GITHUB_TOKEN=$(GITHUB_TOKEN)" \
       -v "$(Build.SourcesDirectory):/app:cached" \
       -v "$(Build.ArtifactStagingDirectory):/reports:cached" \
       quay.io/appthreat/sast-scan:feature_mvn scan --src /app \
