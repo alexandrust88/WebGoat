@@ -23,7 +23,7 @@ steps:
     docker run -e "GITHUB_TOKEN=$(GITHUB_TOKEN)" \
       -v "$(Build.SourcesDirectory):/app:cached" \
       -v "$(Build.ArtifactStagingDirectory):/reports:cached" \
-      quay.io/appthreat/sast-scan:feature_mvn scan --src /app \
+      quay.io/appthreat/sast-scan scan --src /app \
       --out_dir /reports/CodeAnalysisLogs
   displayName: "AppThreat SAST and Dep scan"
   continueOnError: "true"
