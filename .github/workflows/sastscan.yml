@@ -20,6 +20,11 @@ jobs:
         java-version: 1.11
     - name: Build with Maven
       run: mvn compile org.cyclonedx:cyclonedx-maven-plugin:makeAggregateBom
+    - name: depencedy checj
+      uses: AppThreat/dep-scan-action@master
+      env:
+        VULNDB_HOME: ${{ github.workspace }}/db
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
     - name: Self sast-scan
       uses: AppThreat/sast-scan-action@v1.0.0
       env:
