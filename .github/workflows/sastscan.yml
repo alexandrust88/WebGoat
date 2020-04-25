@@ -5,7 +5,7 @@ on:
     branches:
       - develop
   schedule:
-    - cron: "*/1 * * * *"
+    - cron: "* */8 * * *"
 
 jobs:
   build:
